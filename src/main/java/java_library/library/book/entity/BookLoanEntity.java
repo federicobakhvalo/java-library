@@ -32,4 +32,50 @@ public class BookLoanEntity {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
+
+//    create getters and setters for all fields
+
+    public Long getId() {
+        return id;
+    }
+
+    public ReaderTicketEntity getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(ReaderTicketEntity ticket) {
+        this.ticket = ticket;
+    }
+
+    public BookEntity getBook() {
+        return book;
+    }
+
+    public void setBook(BookEntity book) {
+        this.book = book;
+    }
+
+    public BookLoanStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookLoanStatus status) {
+        this.status = status;
+    }
+
+    public LocalDate getReturnedAt() {
+        return returnedAt;
+    }
+
+    public void setReturnedAt(LocalDate returnedAt) {
+        this.returnedAt = returnedAt;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
 }

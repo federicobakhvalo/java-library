@@ -24,4 +24,28 @@ public class UserRoleEntity {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    public void setRole(AuthRoleEntity role) {
+        this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public AuthRoleEntity getRole() {
+        return role;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

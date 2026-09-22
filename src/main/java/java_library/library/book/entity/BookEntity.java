@@ -21,4 +21,34 @@ public class BookEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private BookStatus bookStatus = BookStatus.AVAILABLE;
+
+    public Long getId() {
+        return id;
+    }
+
+    public BookAuthorEntity getAuthor() {
+        return author;
+    }
+
+    public String getBookname() {
+        return bookname;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public BookStatus getBookStatus() {
+        return bookStatus;
+    }
+
+    public void setBookStatus(BookStatus bookStatus) {
+        this.bookStatus = bookStatus;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+
 }

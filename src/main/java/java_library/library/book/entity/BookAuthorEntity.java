@@ -14,4 +14,24 @@ public class BookAuthorEntity {
     private String lastName;
     private String avatarUrl;
     private String description;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
