@@ -75,6 +75,10 @@ public class BookLoanEntity {
         return dueDate;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }

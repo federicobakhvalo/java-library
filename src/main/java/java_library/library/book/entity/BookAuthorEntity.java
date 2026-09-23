@@ -34,4 +34,23 @@ public class BookAuthorEntity {
     public String getDescription() {
         return description;
     }
+
+    //    setters
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
 }
