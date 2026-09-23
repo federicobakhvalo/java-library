@@ -1,16 +1,26 @@
 
 package java_library.library.book.dto.request;
 
+import jakarta.validation.constraints.*;
+
 public class BookCreateRequest {
 
+    @NotNull(message = "Author ID cannot be null")
+    @Positive(message = "Author ID must be a positive number")
     private Long authorId;
 
+    @NotBlank(message = "Book name cannot be blank")
+    @Size(max = 255, message = "Book name cannot exceed 255 characters")
     private String bookname;
 
+    @PositiveOrZero(message = "Quantity must be a positive number or zero")
     private Integer quantity;
 
+    @Size(max = 1000, message = "Image URL cannot exceed 1000 characters")
+    @Pattern(regexp = "^(https?://.*\\.(?:png|jpg|jpeg|gif|svg))?$", message = "Image URL must be a valid image URL")
     private String imageUrl;
 
+    @Size(max = 255, message = "Description cannot exceed 255 characters")
     private String description;
 
     public Long getAuthorId() {
