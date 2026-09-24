@@ -10,6 +10,8 @@ public interface ReaderTicketRepository extends JpaRepository<ReaderTicketEntity
 
     Optional<ReaderTicketEntity> findByCode(String code);
 
+
+
     boolean existsByCode(String code);
 
     Optional<ReaderTicketEntity> findByUserId(Long userId);

@@ -11,6 +11,7 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+import java_library.library.common.enums.JwtTokenType;
 import java_library.library.auth.dto.response.JwtUserData;
 
 @Service
@@ -38,7 +39,8 @@ public class JwtService {
                 userData.getUserId(),
                 userData.getUsername(),
                 userData.getRoles(),
-                accessExpiration
+                accessExpiration,
+                JwtTokenType.ACCESS
         );
     }
 
@@ -47,7 +49,8 @@ public class JwtService {
                 userId,
                 null,
                 null,
-                refreshExpiration
+                refreshExpiration,
+                JwtTokenType.REFRESH
         );
     }
 
@@ -55,7 +58,8 @@ public class JwtService {
             Long userId,
             String username,
             java.util.List<String> roles,
-            long expiration
+            long expiration,
+            JwtTokenType tokenType
     ) {
         Date now = new Date();
 
@@ -66,7 +70,7 @@ public class JwtService {
         var builder = Jwts.builder()
                 .subject(String.valueOf(userId))
                 .issuedAt(now)
-                .expiration(expirationDate);
+                .expiration(expirationDate).claim("type", tokenType.name());
 
         if (username != null) {
             builder.claim("username", username);
@@ -79,6 +83,11 @@ public class JwtService {
         return builder
                 .signWith(secretKey)
                 .compact();
+    }
+
+    public JwtTokenType extractTokenType(String token) {
+        String type = extractAllClaims(token).get("type", String.class);
+        return JwtTokenType.valueOf(type);
     }
 
     public String extractUserId(String token) {
@@ -101,6 +110,27 @@ public class JwtService {
         try {
             extractAllClaims(token);
             return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean isTokenExpired(String token) {
+        Date expiration = extractAllClaims(token).getExpiration();
+        return expiration.before(new Date());
+    }
+
+    public boolean isAccessToken(String token) {
+        try {
+            return extractTokenType(token) == JwtTokenType.ACCESS;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean isRefreshToken(String token) {
+        try {
+            return extractTokenType(token) == JwtTokenType.REFRESH;
         } catch (Exception e) {
             return false;
         }

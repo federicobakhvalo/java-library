@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java_library.library.auth.dto.request.RegisterRequest;
 import java_library.library.auth.dto.request.LoginRequest;
 import java_library.library.auth.dto.response.AuthResponse;
+import java_library.library.auth.dto.request.RefreshRequest;
 import java_library.library.auth.service.AuthService;
 
 @RestController
@@ -31,6 +32,11 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
+    }
+
+    @PostMapping("/refresh")
+    public AuthResponse refresh(@Valid @RequestBody RefreshRequest request) {
+        return authService.refresh(request);
     }
 }
 

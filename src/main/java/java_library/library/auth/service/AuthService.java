@@ -19,6 +19,7 @@ import java_library.library.user.entity.UserEntity;
 import java_library.library.user.mapper.UserMapper;
 import java_library.library.user.service.UserService;
 import java_library.library.auth.dto.request.LoginRequest;
+import java_library.library.auth.dto.request.RefreshRequest;
 
 @Service
 public class AuthService {
@@ -44,6 +45,30 @@ public class AuthService {
         this.userRoleService = userRoleService;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+    }
+
+    @Transactional(readOnly = true)
+    public AuthResponse refresh(RefreshRequest request) {
+        String refreshToken = request.getRefreshToken();
+        if (!jwtService.isTokenValid(refreshToken)) {
+            throw new RuntimeException("Invalid or expired refresh token");
+        }
+        if (!jwtService.isRefreshToken(refreshToken)) {
+            throw new RuntimeException("Token is not a refresh token");
+        }
+        Long userId = Long.valueOf(jwtService.extractUserId(refreshToken));
+        UserEntity user = userService.findById(userId);
+        if (!Boolean.TRUE.equals(user.getIsActive())) {
+            throw new RuntimeException("User account is inactive");
+        }
+        List<String> roles = userRoleService.findRolesByUserId(user.getId()).stream().map(role -> role.getRole().name()).toList();
+        JwtUserData jwtUserData = new JwtUserData(user.getId(), user.getUsername(), roles);
+        String newAccessToken = jwtService.generateAccessToken(jwtUserData);
+        String newRefreshToken = jwtService.generateRefreshToken(user.getId());
+        AuthResponse response = new AuthResponse();
+        response.setAccessToken(newAccessToken);
+        response.setRefreshToken(newRefreshToken);
+        return response;
     }
 
     @Transactional
