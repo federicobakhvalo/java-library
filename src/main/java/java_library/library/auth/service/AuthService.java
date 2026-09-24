@@ -1,6 +1,7 @@
 
 package java_library.library.auth.service;
 
+import java_library.library.user.service.ReaderTicketService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ public class AuthService {
     private final UserRoleService userRoleService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final ReaderTicketService readerTicketService;
 
     public AuthService(
             UserService userService,
@@ -37,7 +39,8 @@ public class AuthService {
             AuthRoleService authRoleService,
             UserRoleService userRoleService,
             PasswordEncoder passwordEncoder,
-            JwtService jwtService
+            JwtService jwtService,
+            ReaderTicketService readerTicketService
     ) {
         this.userService = userService;
         this.userMapper = userMapper;
@@ -45,6 +48,7 @@ public class AuthService {
         this.userRoleService = userRoleService;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.readerTicketService = readerTicketService;
     }
 
     @Transactional(readOnly = true)
@@ -81,17 +85,6 @@ public class AuthService {
             throw new RuntimeException("Email already exists");
         }
 
-//        if (userService.findByUsername(request.getUsername()) != null) {
-//            throw new RuntimeException(
-//                    "Username already exists: " + request.getUsername()
-//            );
-//        }
-//
-//        if (userService.findByEmail(request.getEmail()) != null) {
-//            throw new RuntimeException(
-//                    "Email already exists: " + request.getEmail()
-//            );
-//        }
 
         UserEntity user = new UserEntity();
         user.setUsername(request.getUsername());
@@ -100,6 +93,8 @@ public class AuthService {
         user.setBirthDate(request.getBirthDate());
         user.setAvatarUrl(request.getAvatarUrl());
         UserEntity savedUser = userService.create(user);
+
+        readerTicketService.create(savedUser);
 
         AuthRoleEntity userRole =
                 authRoleService.findByRole(AuthRoleGroup.USER);

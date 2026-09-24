@@ -24,6 +24,13 @@ public interface BookLoanRepository extends JpaRepository<BookLoanEntity, Long> 
             Long bookId,
             BookLoanStatus status
     );
+
+    List<BookLoanEntity> findByTicketUserId(Long userId);
+
+    List<BookLoanEntity> findByTicketUserIdAndStatus(Long userId, BookLoanStatus status);
+
+    boolean existsByTicketIdAndBookIdAndStatus(Long ticketId, Long bookId, BookLoanStatus status);
+
 }
 
 
