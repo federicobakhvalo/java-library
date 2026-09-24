@@ -18,6 +18,7 @@ import java_library.library.auth.service.UserRoleService;
 import java_library.library.user.entity.UserEntity;
 import java_library.library.user.mapper.UserMapper;
 import java_library.library.user.service.UserService;
+import java_library.library.auth.dto.request.LoginRequest;
 
 @Service
 public class AuthService {
@@ -107,5 +108,44 @@ public class AuthService {
 
         return response;
     }
+
+    @Transactional(readOnly = true)
+    public AuthResponse login(LoginRequest request) {
+
+        UserEntity user = userService.findByUsernameOrEmail(request.getLogin());
+
+        if (!Boolean.TRUE.equals(user.getIsActive())) {
+            throw new RuntimeException("User account is inactive");
+        }
+
+        if (!passwordEncoder.matches(
+                request.getPassword(),
+                user.getPassword()
+        )) {
+            throw new RuntimeException("Invalid login or password");
+        }
+
+        List<String> roles = userRoleService.findRolesByUserId(user.getId())
+                .stream()
+                .map(role -> role.getRole().name())
+                .toList();
+
+        JwtUserData jwtUserData = new JwtUserData(
+                user.getId(),
+                user.getUsername(),
+                roles
+        );
+
+        String accessToken = jwtService.generateAccessToken(jwtUserData);
+        String refreshToken = jwtService.generateRefreshToken(user.getId());
+
+        AuthResponse response = new AuthResponse();
+        response.setAccessToken(accessToken);
+        response.setRefreshToken(refreshToken);
+
+        return response;
+    }
+
+
 }
 

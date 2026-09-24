@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java_library.library.auth.dto.request.RegisterRequest;
+import java_library.library.auth.dto.request.LoginRequest;
 import java_library.library.auth.dto.response.AuthResponse;
 import java_library.library.auth.service.AuthService;
 
@@ -25,6 +26,11 @@ public class AuthController {
             @Valid @RequestBody RegisterRequest request
     ) {
         return authService.register(request);
+    }
+
+    @PostMapping("/login")
+    public AuthResponse login(@Valid @RequestBody LoginRequest request) {
+        return authService.login(request);
     }
 }
 

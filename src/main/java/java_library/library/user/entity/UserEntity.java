@@ -100,5 +100,9 @@ public class UserEntity {
         this.avatarUrl = avatarUrl;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
 
 }
