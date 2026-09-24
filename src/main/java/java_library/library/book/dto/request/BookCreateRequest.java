@@ -2,6 +2,7 @@
 package java_library.library.book.dto.request;
 
 import jakarta.validation.constraints.*;
+import java_library.library.common.enums.BookStatus;
 
 public class BookCreateRequest {
 
@@ -22,6 +23,8 @@ public class BookCreateRequest {
 
     @Size(max = 255, message = "Description cannot exceed 255 characters")
     private String description;
+
+    private BookStatus bookStatus;
 
     public Long getAuthorId() {
         return authorId;
@@ -61,6 +64,14 @@ public class BookCreateRequest {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public BookStatus getBookStatus() {
+        return bookStatus;
+    }
+
+    public void setBookStatus(BookStatus bookStatus) {
+        this.bookStatus = bookStatus;
     }
 }
 
