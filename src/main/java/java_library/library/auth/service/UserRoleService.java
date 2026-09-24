@@ -22,6 +22,10 @@ public class UserRoleService {
         return userRoleRepository.findAll();
     }
 
+    public List<AuthRoleEntity> findRolesByUserId(Long userId) {
+        return userRoleRepository.findByUserId(userId).stream().map(UserRoleEntity::getRole).toList();
+    }
+
     public UserRoleEntity findById(Long id) {
         return userRoleRepository.findById(id)
                 .orElseThrow(() ->
