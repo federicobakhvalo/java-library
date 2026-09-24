@@ -1,0 +1,30 @@
+package java_library.library.auth.controller;
+
+
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java_library.library.auth.dto.request.RegisterRequest;
+import java_library.library.auth.dto.response.AuthResponse;
+import java_library.library.auth.service.AuthService;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AuthResponse register(
+            @Valid @RequestBody RegisterRequest request
+    ) {
+        return authService.register(request);
+    }
+}
+

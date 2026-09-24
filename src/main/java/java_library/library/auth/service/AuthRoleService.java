@@ -35,6 +35,10 @@ public class AuthRoleService {
                 );
     }
 
+    public boolean existsByRole(AuthRoleGroup role) {
+        return authRoleRepository.existsByRole(role);
+    }
+
     public AuthRoleEntity save(AuthRoleEntity role) {
         return authRoleRepository.save(role);
     }

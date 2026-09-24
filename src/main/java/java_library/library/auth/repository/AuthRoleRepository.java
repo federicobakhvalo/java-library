@@ -8,5 +8,7 @@ import java.util.Optional;
 
 public interface AuthRoleRepository extends JpaRepository<AuthRoleEntity, Long> {
     Optional<AuthRoleEntity> findByRole(AuthRoleGroup role);
+
+    boolean existsByRole(AuthRoleGroup role);
 }
 

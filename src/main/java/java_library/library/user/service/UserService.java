@@ -54,6 +54,14 @@ public class UserService {
                 );
     }
 
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
     public UserEntity create(UserEntity user) {
 
         if (userRepository.existsByUsername(user.getUsername())) {
